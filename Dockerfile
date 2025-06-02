@@ -1,23 +1,19 @@
-FROM python:3.11-slim-bookworm
-
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc python3-dev && \
-    rm -rf /var/lib/apt/lists/*
+FROM python:3.13.3-slim AS builder
 
 WORKDIR /app
-COPY pyproject.toml poetry.lock* ./
 
-RUN pip install --no-cache-dir uv && \
-    uv pip install --no-cache-dir -e .
+COPY requirements.txt .
+
+RUN pip install --no-cache-dir -r requirements.txt --prefix "/opt/venv"
+
+FROM python:3.13.3-slim
+
+WORKDIR /app
+
+COPY --from=builder /opt/venv /usr/local
 
 COPY . .
 
-ENV FLASK_APP=main.py
-ENV FLASK_ENV=production
-ENV FLASK_SECRET_KEY=${FLASK_SECRET_KEY}
-
-# Открываем порт
 EXPOSE 8000
 
-# Запускаем приложение через uvicorn
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["gunicorn", "main:app", "--workers", "3", "--bind", "0.0.0.0:8000"]
