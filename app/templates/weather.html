@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Погода в {{ weather.city }}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="title">Погода в {{ weather.city }}</h1>
+      </header>
+
+      <main class="main-content">
+        <div class="weather-card">
+          <div class="weather-main">
+            <div class="temperature">{{ weather.temperature_2m }}°C</div>
+            <div class="weather-description">
+              Ощущается как {{ weather.apparent_temperature }}°C
+            </div>
+          </div>
+
+          <ul class="weather-details">
+            <li class="weather-detail">
+              <span class="detail-label">Ветер:</span>
+              <span class="detail-value">{{ weather.wind_speed_10m }} м/с</span>
+            </li>
+            <li class="weather-detail">
+              <span class="detail-label">Осадки:</span>
+              <span class="detail-value">{{ weather.precipitation }}</span>
+            </li>
+            <li class="weather-detail">
+              <span class="detail-label">Влажность:</span>
+              <span class="detail-value"
+                >{{ weather.relative_humidity_2m }}%</span
+              >
+            </li>
+            <li class="weather-detail">
+              <span class="detail-label">Давление:</span>
+              <span class="detail-value"
+                >{{ weather.surface_pressure }} гПа</span
+              >
+            </li>
+          </ul>
+        </div>
+
+        <div class="back-link-container">
+          <a href="/" class="back-link">← Назад к поиску</a>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

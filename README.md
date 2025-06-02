@@ -27,5 +27,7 @@
 
 ```bash
 uv sync
-flask run
+flask run 
+or
+gunicorn main:app
 ```

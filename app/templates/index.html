@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Погода</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1 class="title">Узнайте погоду в вашем городе</h1>
+      </header>
+
+      <main class="main-content">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if
+        messages %}
+        <div class="flash-messages">
+          {% for category, message in messages %}
+          <div class="flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %} {% endwith %}
+
+        <form class="weather-form" action="/" method="post">
+          <div class="input-group">
+            <input
+              type="text"
+              name="city"
+              id="city"
+              class="city-input"
+              placeholder="Введите название города"
+              autocomplete="off"
+              required
+            />
+            <div id="suggestions" class="suggestions-container"></div>
+          </div>
+          <button type="submit" class="submit-btn">Показать погоду</button>
+        </form>
+
+        {% if last_city %}
+        <div class="last-city">
+          <p>
+            Посмотреть погоду в последнем городе:
+            <a href="/weather/{{ last_city }}" class="last-city-link"
+              >{{ last_city }}</a
+            >
+          </p>
+        </div>
+        {% endif %}
+      </main>
+    </div>
+  </body>
+</html>
